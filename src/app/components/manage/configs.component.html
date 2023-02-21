@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>Configs <button type="button" class="btn btn-success" (click)="loadConfigs()">Load</button></h2>
+
+  <div class="col" *ngFor="let config of model">
+    <p>Name: {{config.name}}</p>
+    <p>Desc: {{config.description}}</p>
+    <p>Fee: {{config.fee}}</p>
+    <p>Length: {{config.length}}</p>
+    <p>Address: {{config.address}}</p>
+    <p>ConfigNFT: {{config.configNFT}}</p>
+    <hr />
+  </div>
+
+  <form (ngSubmit)="newService()" #newServiceForm="ngForm">
+
+    <label for="newServiceConfig">Config</label>
+    <select class="form-control" [(ngModel)]="newServiceConfig" name="config" required>
+      <option *ngFor="let config of model" [ngValue]="config.configNFT">{{config.name}}</option>
+    </select>
+
+    <button type="submit" class="btn btn-success" [disabled]="!newServiceForm.form.valid">New Service</button>
+
+    <mat-spinner [hidden]="!submitting"></mat-spinner>
+
+  </form>
+</div>

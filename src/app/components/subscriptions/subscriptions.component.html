@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>My Subscriptions <button type="button" class="btn btn-secondary float-right" (click)="loadSubscriptions()" [hidden]="loading">Refresh</button></h2>
+
+  <mat-spinner [hidden]="!loading"></mat-spinner>
+  <div class="col" *ngFor="let subscription of model">
+    <p>Name: {{subscription.service.config.name}}</p>
+    <p>Wallet: {{subscription.walletAddress}}</p>
+    <p>Subscription TokenId: {{subscription.tokenId}}</p>
+    <p>Start: {{subscription.startDate}}</p>
+    <p>End: {{subscription.endDate}}</p>
+    <p>Expired: {{subscription.expired}}</p>
+    <p>Suggest Renew: {{subscription.suggestRenewal}}</p>
+    <button type="button" class="btn btn-danger" (click)="cancelSubscription(subscription.tokenId)" [disabled]="subscription.expired">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="renewSubscription(subscription.tokenId)" [disabled]="!subscription.suggestRenewal">Renew</button>
+
+  </div>
+</div>

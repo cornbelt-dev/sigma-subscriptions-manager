@@ -1,0 +1,12 @@
+<!-- Toolbar -->
+<div class="px-4 navbar navbar-dark bg-dark" role="banner">
+  <h2 class="m-0"><a routerLink="/">Sigma Subscriptions</a></h2>
+  <div class="spacer"></div>
+  <nav [hidden]="!connected">
+  </nav>
+  <wallet></wallet>
+</div>
+
+<div class="container my-5" role="main">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Services <button type="button" class="btn btn-success" (click)="loadServices()">Load</button></h2>
+
+  <div class="col" *ngFor="let service of model">
+    <p>Name: {{service.config.name}}</p>
+    <p>Desc: {{service.config.description}}</p>
+    <p>Fee: {{service.config.fee}}</p>
+    <p>Length: {{service.config.length}}</p>
+    <p>Address: {{service.config.address}}</p>
+    <p>ConfigNFT: {{service.config.configNFT}}</p>
+    <p>Service TokenId: {{service.tokenId}}</p>
+    <hr />
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Subscriptions <button type="button" class="btn btn-success" (click)="loadSubscriptions('3efab3a23890e70ff5e3ea3cdad0a1c7fc25ff12e562853667e26e56593eef0e')">Load</button></h2>
+
+  <div class="col" *ngFor="let subscription of model">
+    <p>Wallet: {{subscription.walletAddress}}</p>
+    <p>Subscription TokenId: {{subscription.tokenId}}</p>
+    <p>Start: {{subscription.startDate}}</p>
+    <p>End: {{subscription.endDate}}</p>
+    <p>Expired: {{subscription.expired}}</p>
+    <p>Suggest Renew: {{subscription.suggestRenewal}}</p>
+    <p>BoxId: {{subscription.boxId}}</p>
+    <button type="button" class="btn btn-success" (click)="collectSubscription(subscription.boxId)" [disabled]="!subscription.expired">Collect</button>
+  </div>
+</div>
