@@ -4,7 +4,7 @@ import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { SigmaSubscriptions, ServiceConfig, Service, Subscription, SigmaSubscriptionsAuthResponse, LENGTH_IN_MILISECONDS, ONE_ERG_IN_NANOERG } from 'sigma-subscriptions';
 import { Box, Amount, Network } from '@fleet-sdk/common';
 import { Config } from '../../service';
-import { _signAndSend } from '../../app.component';
+import { WalletService } from 'src/app/wallet.service';
 
 @Component({
   selector: 'configs',
@@ -12,6 +12,8 @@ import { _signAndSend } from '../../app.component';
 })
 
 export class ConfigsComponent {
+
+  constructor(private walletService: WalletService) {}
 
   ergDenom = BigInt(ONE_ERG_IN_NANOERG);
 
@@ -39,7 +41,7 @@ export class ConfigsComponent {
     const tx: UnsignedTransaction = await manager.createService(ergo!, this.newServiceConfig);
 
     console.log(tx);
-    await _signAndSend(tx);
+    await this.walletService.signAndSend(tx);
 
     this.submitting = false;
   }

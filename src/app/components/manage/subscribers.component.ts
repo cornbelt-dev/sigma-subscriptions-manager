@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SigmaSubscriptions, Subscription } from 'sigma-subscriptions';
 import { UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { Network } from '@fleet-sdk/common';
-import { _signAndSend } from '../../app.component';
+import { WalletService } from 'src/app/wallet.service';
 
 @Component({
   selector: 'subscribers',
@@ -10,6 +10,8 @@ import { _signAndSend } from '../../app.component';
 })
 
 export class SubscribersComponent {
+
+  constructor(private walletService: WalletService) {}
 
   model: Subscription[] = [];
 
@@ -23,7 +25,7 @@ export class SubscribersComponent {
   async collectSubscription(boxId: string) {
     let tx: UnsignedTransaction = await this.manager.collect(ergo!, boxId);
     console.log(tx);
-    _signAndSend(tx);
+    this.walletService.signAndSend(tx);
   }
 
 }

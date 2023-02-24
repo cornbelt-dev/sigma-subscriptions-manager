@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { SigmaSubscriptions } from 'sigma-subscriptions';
 import { Box, Amount, Network } from '@fleet-sdk/common';
-import { _signAndSend } from '../../app.component';
+import { WalletService } from 'src/app/wallet.service';
 
 @Component({
   selector: 'subscribe',
@@ -11,6 +11,8 @@ import { _signAndSend } from '../../app.component';
 })
 
 export class SubscribeComponent {
+
+  constructor(private walletService: WalletService) {}
 
   submitting = false;
   async subscribe(serviceTokenId: string) {
@@ -23,7 +25,7 @@ export class SubscribeComponent {
     const tx: UnsignedTransaction = await manager.subscribe(ergo!, serviceTokenId, startDate);
 
     console.log(tx);
-    await _signAndSend(tx);
+    await this.walletService.signAndSend(tx);
 
     this.submitting = false;
   }

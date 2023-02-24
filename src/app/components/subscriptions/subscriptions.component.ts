@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { SigmaSubscriptions, Subscription } from 'sigma-subscriptions';
 import { UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { Network } from '@fleet-sdk/common';
-import { _signAndSend } from 'src/app/app.component';
 import { Router } from '@angular/router';
 import { WalletService } from 'src/app/wallet.service';
 
@@ -27,7 +26,7 @@ export class SubscriptionsComponent {
   async loadSubscriptions() {
 
     this.loading = true;
-    const wallet = await this.walletService.getWallet(true);
+    const wallet = await this.walletService.getWallet();
     if (wallet) {
       let services: Subscription[] = await this.manager.getSubscriptionsForWallet(wallet);
       this.model = services;
@@ -40,7 +39,7 @@ export class SubscriptionsComponent {
     if (subscriptionToken) {
       let tx: UnsignedTransaction = await this.manager.cancel(ergo!, subscriptionToken);
       console.log(tx);
-      _signAndSend(tx);
+      this.walletService.signAndSend(tx);
     }
   }
 
@@ -49,7 +48,7 @@ export class SubscriptionsComponent {
     if (subscriptionToken) {
       let tx: UnsignedTransaction = await this.manager.renew(ergo!, subscriptionToken);
       console.log(tx);
-      _signAndSend(tx);
+      this.walletService.signAndSend(tx);
     }
   }
 

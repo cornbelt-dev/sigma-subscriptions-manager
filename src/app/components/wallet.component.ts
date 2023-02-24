@@ -1,4 +1,5 @@
-import { Component, setTestabilityGetter } from '@angular/core';
+import { Component, Optional } from '@angular/core';
+import {  MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { WalletService } from '../wallet.service';
@@ -14,21 +15,21 @@ export class WalletComponent {
   address: string | undefined = 'Connect Wallet';
   connected: boolean = false;
 
-  constructor(private walletService: WalletService, private router: Router) { }
+  constructor(public dialog: MatDialog, private walletService: WalletService, private router: Router) { }
 
   async ngOnInit() {
-    this.wallet = await this.walletService.getWallet(true);
+    this.wallet = await this.walletService.getWallet();
     await this.setWalletStatus();
   }
 
-  async connectWallet() {
-    this.wallet = await this.walletService.getWallet(true);
+  async connectWallet(wallet: string) {
+    this.wallet = await this.walletService.connect(wallet);
     await this.setWalletStatus();
   }
 
   async disconnectWallet(event: any) {    
     event.stopPropagation();
-    this.wallet = await this.walletService.disconnectWallet();
+    this.wallet = await this.walletService.disconnect();
     await this.setWalletStatus();
   }
 
@@ -42,4 +43,30 @@ export class WalletComponent {
       this.router.navigate(['./']);
     }
   }
+
+  openWalletConnect() {
+    const dialogRef = this.dialog.open(WalletDialogComonent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.connectWallet(result)
+      }
+    });
+  }
+
+}
+
+@Component({
+  selector: 'wallet-dialog',
+  templateUrl: './wallet-dialog.component.html',
+})
+export class WalletDialogComonent {
+
+  constructor(public dialogRef: MatDialogRef<WalletDialogComonent>) {}
+
+  onSelect(wallet: string): void {
+    this.dialogRef.close(wallet);
+  }
+  
+
 }

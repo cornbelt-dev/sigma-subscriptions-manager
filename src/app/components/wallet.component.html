@@ -1,1 +1,4 @@
-<button type="button" class="btn btn-success" (click)="connectWallet()">{{address}} <button type="button" class="btn btn-sm btn-danger ml-2 py-0" (click)="disconnectWallet($event)" [hidden]="!connected">X</button></button>
+
+<button type="button" class="btn btn-success" mat-button (click)="openWalletConnect()" [hidden]="connected">Connect Wallet</button>
+
+<div class="btn btn-success" [hidden]="!connected">{{address}} <button type="button" class="btn btn-sm btn-danger ml-2 py-0" (click)="disconnectWallet($event)">X</button></div>
