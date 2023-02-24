@@ -18,6 +18,8 @@ export class AppComponent {
 
 }
 
+
+
 export async function _signAndSend(tx: UnsignedTransaction) {
   const signedTx = await ergo!.sign_tx(tx);
   const txId = await ergo!.submit_tx(signedTx);
