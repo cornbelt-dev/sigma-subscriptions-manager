@@ -11,6 +11,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard.component';
 import { WalletComponent, WalletDialogComonent } from './components/wallet.component';
+import { SettingsComponent, SettingsEditComonent } from './components/settings.component';
 import { ManagerComponent } from './components/manage/manager.component';
 import { ConfigsComponent } from './components/manage/configs.component';
 import { ServicesComponent } from './components/manage/services.component';
@@ -25,6 +26,8 @@ import { MillisecondToTimePipe } from './millisecond-to-time.pipe';
     AppComponent,
     WalletComponent,
     WalletDialogComonent,
+    SettingsComponent,
+    SettingsEditComonent,
     ConfigsComponent,
     ServicesComponent,
     ServiceEditComponent,

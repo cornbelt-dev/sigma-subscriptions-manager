@@ -1,5 +1,5 @@
-import { Component, Optional } from '@angular/core';
-import {  MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Optional } from '@angular/core';
+import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { WalletService } from '../wallet.service';
@@ -11,6 +11,7 @@ import { WalletService } from '../wallet.service';
 
 export class WalletComponent {
 
+  class: string = "";
   wallet: EIP12ErgoAPI | undefined;
   address: string | undefined = 'Connect Wallet';
   connected: boolean = false;
@@ -54,6 +55,14 @@ export class WalletComponent {
     });
   }
 
+  openAddress() {
+    this.dialog.open(AddressDialogComonent, { data: { address: this.address }});
+  }
+
+  openSettings() {
+
+  }
+
 }
 
 @Component({
@@ -68,4 +77,24 @@ export class WalletDialogComonent {
     this.dialogRef.close(wallet);
   } 
 
+}
+
+@Component({
+  selector: 'address-dialog',
+  template: `<div class="p-5 pb-4 text-center ">
+                <div mat-dialog-content>
+                  <p class="text-break">{{data.address}}</p>
+                </div>
+                <div mat-dialog-actions>
+                  <button class="btn btn-dark" (click)="close()">Close</button>
+                </div>
+              </div>`,
+})
+export class AddressDialogComonent {
+  constructor(public dialogRef: MatDialogRef<WalletDialogComonent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
+
+  close(): void {
+    this.dialogRef.close();
+  } 
 }

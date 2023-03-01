@@ -23,6 +23,7 @@
     "@fleet-sdk/common": "^0.1.0-alpha.19",
     "@nautilus-js/eip12-types": "^0.1.9",
     "jest-editor-support": "*",
+    "ng-process-env": "^15.0.1",
     "rxjs": "~7.5.0",
     "sigma-subscriptions": "file:../sigma-subscriptions",
     "tslib": "^2.3.0",

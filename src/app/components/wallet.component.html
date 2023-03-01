@@ -1,8 +1,11 @@
 
-<button type="button" class="btn btn-success" mat-button (click)="openWalletConnect()" [hidden]="connected">Connect Wallet</button>
+<button type="button" class="btn btn-outline-success" mat-button (click)="openWalletConnect()" [hidden]="connected">Connect Wallet</button>
 
-<div class="btn btn-success btn-sm" [hidden]="!connected">
-    <span class="d-lg-none d-xl-none">{{address | slice:0:4 }}...{{address | slice: -4 }}</span>
-    <span class="d-none d-lg-inline">{{address}}</span>
-    <button type="button" class="btn btn-sm btn-danger ml-2 py-0" (click)="disconnectWallet($event)">X</button>
+<div class="btn-group" role="group" [hidden]="!connected">
+    <button type="button" class="btn btn-outline-success" (click)="openAddress()">
+        <span class="slice">{{address | slice:0:8 }}...</span>
+    </button>
+    <button type="button" class="btn btn-outline-danger" (click)="disconnectWallet($event)"><i class="fa fa-times" aria-hidden="true"></i></button>
 </div>
+
+<settings></settings>
