@@ -1,14 +1,76 @@
 <div class="container">
-  <h2>Services <button type="button" class="btn btn-success" (click)="loadServices()">Load</button></h2>
 
-  <div class="col" *ngFor="let service of model">
-    <p>Name: {{service.config.name}}</p>
-    <p>Desc: {{service.config.description}}</p>
-    <p>Fee: {{service.config.fee}}</p>
-    <p>Length: {{service.config.length}}</p>
-    <p>Address: {{service.config.address}}</p>
-    <p>ConfigNFT: {{service.config.configNFT}}</p>
-    <p>Service TokenId: {{service.tokenId}}</p>
-    <hr />
+  <div class="text-center mb-5">
+    <h5>
+      <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
+      <span class="px-1">/</span>
+    </h5> 
+    <h1 class="text-lg">Services</h1>
+  </div>
+  
+  <div class="row" [hidden]="services.length > 0 || loading"><h4 class="text-center">You have no Services at this time</h4></div>
+
+  <div [hidden]="txId != null">      
+    <div class="mb-3" [ngClass]="services.length > 0 ? 'text-right' : 'text-center'">
+      <button type="button" class="btn btn-outline-primary" (click)="newService()" [hidden]="loading">New Service</button>
+    </div>
+
+    <div class="cdk-overlay-container" [hidden]="!launching">
+      <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
+      <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+        <div id="cdk-overlay-0" class="cdk-overlay-pane" style="max-width: 80vw; position: static;">
+          <mat-spinner></mat-spinner>
+        </div>
+      </div>
+    </div>
+
+    <mat-spinner [hidden]="!loading" class="m-auto"></mat-spinner>
+    <div class="row" [hidden]="loading">
+      <div class="col-xl-6" *ngFor="let service of services">
+        <div class="card mb-4" [ngClass]="service.tokenId == undefined ? 'border-dark' : 'border-success'">
+          <div class="card-header">
+            <h2 class="float-left m-0 pt-1">{{service.config.name}}</h2>
+            <a class="btn btn-primary float-right ml-2" [routerLink]="['/service', service.config.configNFT]">Edit</a>
+            <a class="btn btn-secondary float-right ml-2" [routerLink]="['/subscribers', service.tokenId]" [hidden]="service.tokenId == undefined">View</a>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col mb-4 overflow-hidden"><p class="text-muted">Description</p> {{service.config.description}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 mb-4"><p class="text-muted">Length</p> {{service.config.lengthDisplay}}</div>
+              <div class="col-sm-6 mb-4"><p class="text-muted">Fee <span class="badge badge-secondary">ERG</span></p> {{service.config.fee}}</div>
+            </div>
+            <div class="row">            
+              <div class="col overflow-hidden">
+                <div *ngIf="service.tokenId == undefined; then launch else show"></div>
+                <ng-template #launch>
+                  <button type="button" class="btn btn-success" (click)="launchService(service.config.configNFT)">Launch Service</button>
+                </ng-template>
+                <ng-template #show>
+                  <p class="text-muted">Service Token Id</p> {{service.tokenId}}
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-outline-secondary" (click)="loadServices()" [hidden]="services.length == 0 || loading">Refresh</button>
+    </div>
+  </div>
+  
+  <div [hidden]="txId == null">
+    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
+      <h2 class="alert-heading">Service Launched Successfully!</h2>
+      <span class="checkmark">
+        <div class="checkmark_stem"></div>
+        <div class="checkmark_kick"></div>
+      </span>
+      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+    </div>
   </div>
 </div>

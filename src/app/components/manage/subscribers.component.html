@@ -1,14 +1,90 @@
 <div class="container">
-  <h2>Subscriptions <button type="button" class="btn btn-success" (click)="loadSubscriptions('3efab3a23890e70ff5e3ea3cdad0a1c7fc25ff12e562853667e26e56593eef0e')">Load</button></h2>
 
-  <div class="col" *ngFor="let subscription of model">
-    <p>Wallet: {{subscription.walletAddress}}</p>
-    <p>Subscription TokenId: {{subscription.tokenId}}</p>
-    <p>Start: {{subscription.startDate}}</p>
-    <p>End: {{subscription.endDate}}</p>
-    <p>Expired: {{subscription.expired}}</p>
-    <p>Suggest Renew: {{subscription.suggestRenewal}}</p>
-    <p>BoxId: {{subscription.boxId}}</p>
-    <button type="button" class="btn btn-success" (click)="collectSubscription(subscription.boxId)" [disabled]="!subscription.expired">Collect</button>
+  <div class="text-center mb-5">
+    <h5>
+      <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
+      <span class="px-1">/</span>
+      <span type="button" (click)="nav('/manager')" class="m-0">Services</span>
+      <span class="px-1">/</span>
+    </h5> 
+    <h1 class="text-lg">Subscribers</h1>
   </div>
+
+    <h2 [hidden]="loading">{{title}}</h2>
+    <mat-spinner [hidden]="!loading" class="m-auto"></mat-spinner>
+    <div class="row" [hidden]="subscribers.length > 0 || loading"><h4 class="text-center">You have no Subscribers at this time</h4></div>
+    <div class="row" [hidden]="loading">
+      <div class="col-xl-6" *ngFor="let subscription of subscribers">        
+        <div class="card mb-4" [ngClass]="subscription.expired ? 'border-danger' : 'border-success'">
+          <div class="card-header">
+            <div class="m-0 py-1">{{subscription.walletAddress}}</div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-4 mb-4"><p class="text-muted">Start Date</p> {{subscription.startDate | date:'medium'}}</div>
+              <div class="col-sm-4 mb-4"><p class="text-muted">End Date</p> {{subscription.endDate | date:'medium'}}</div>
+              <div class="col-sm-4 mb-4">
+                <p class="text-muted">Status</p> 
+                <div *ngIf="subscription.expired; then expired else active"></div>
+                <ng-template #expired><span class="badge bg-danger">Expired</span></ng-template>
+                <ng-template #active><span class="badge bg-success">Active</span></ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col overflow-hidden"><p class="text-muted">Subscription Token Id</p>{{subscription.tokenId}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div [hidden]="txId != null">
+      <h2 [hidden]="loading">{{titleExpired}}
+        <!-- <button type="button" class="btn btn-primary float-right" (click)="collectAll()" [hidden]="expiredSubscribers.length == 0">Collect All</button> -->
+      </h2>
+      <div class="row" [hidden]="loading">
+        <div class="col-xl-6" *ngFor="let subscription of expiredSubscribers">        
+          <div class="card mb-4" [ngClass]="subscription.expired ? 'border-danger' : 'border-success'">
+            <div class="card-header">
+              <div class="m-0">         
+                <button type="button" class="btn btn-success btn-sm float-right ml-2" (click)="collectSubscription(subscription.boxId)" [disabled]="!subscription.expired">Collect</button>
+                <div class="pt-1">{{subscription.walletAddress}}</div>
+              </div>  
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4 mb-4"><p class="text-muted">Start Date</p> {{subscription.startDate | date:'medium'}}</div>
+                <div class="col-sm-4 mb-4"><p class="text-muted">End Date</p> {{subscription.endDate | date:'medium'}}</div>
+                <div class="col-sm-4 mb-4">
+                  <p class="text-muted">Status</p> 
+                  <div *ngIf="subscription.expired; then expired else active"></div>
+                  <ng-template #expired><span class="badge bg-danger">Expired</span></ng-template>
+                  <ng-template #active><span class="badge bg-success">Active</span></ng-template>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col overflow-hidden"><p class="text-muted">Subscription Token Id</p>{{subscription.tokenId}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <div class="text-center">
+      <button type="button" class="btn btn-outline-secondary" (click)="loadSubscriptions()" [hidden]="loading">Refresh</button>
+    </div>
+  </div>
+  
+  <div [hidden]="txId == null">
+    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
+      <h2 class="alert-heading">Subscription Collected Successfully!</h2>
+      <span class="checkmark">
+        <div class="checkmark_stem"></div>
+        <div class="checkmark_kick"></div>
+      </span>
+      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+    </div>
+  </div>
+
 </div>

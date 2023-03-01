@@ -37,13 +37,18 @@ export class WalletService {
         if (connected) {
           connected = await walletConnector.connect();
           this.wallet = ergo;
+          this.connectedWallet = wallet;
+          localStorage.setItem("connectedWallet", wallet);
         } else {
           const granted = await walletConnector.connect();
           if (granted) {
             this.wallet = await walletConnector.getContext();
+            this.connectedWallet = wallet;
             localStorage.setItem("connectedWallet", wallet);
           } else {
             this.wallet = undefined;
+            this.connectedWallet = undefined;
+            localStorage.removeItem("connectedWallet");
           }
         }   
       }   
@@ -52,7 +57,7 @@ export class WalletService {
   }
 
   async disconnect(): Promise<EIP12ErgoAPI | undefined> {
-    
+
     const connector =
       ergoConnector && this.connectedWallet ? ergoConnector[this.connectedWallet] : undefined;
 
@@ -63,14 +68,20 @@ export class WalletService {
     this.wallet = undefined;
     this.connectedWallet = undefined;
     localStorage.removeItem("connectedWallet");
+
     return this.wallet;
   }
 
-  async signAndSend(tx: UnsignedTransaction): Promise<string> {
-    const signedTx = await ergo!.sign_tx(tx);
-    const txId = await ergo!.submit_tx(signedTx);
-    console.log(txId);
-    return txId;
+  async signAndSend(tx: UnsignedTransaction): Promise<string | undefined> {
+    try {      
+      const signedTx = await ergo!.sign_tx(tx);
+      const txId = await ergo!.submit_tx(signedTx);
+      console.log(txId);
+      return txId;
+    } catch (ex) { 
+      console.log(ex);
+      return undefined;
+    }
   }
 
 }

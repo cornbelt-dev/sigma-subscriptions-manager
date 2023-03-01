@@ -1,17 +1,67 @@
 <div class="container">
-  <h2>My Subscriptions <button type="button" class="btn btn-secondary float-right" (click)="loadSubscriptions()" [hidden]="loading">Refresh</button></h2>
 
-  <mat-spinner [hidden]="!loading"></mat-spinner>
-  <div class="col" *ngFor="let subscription of model">
-    <p>Name: {{subscription.service.config.name}}</p>
-    <p>Wallet: {{subscription.walletAddress}}</p>
-    <p>Subscription TokenId: {{subscription.tokenId}}</p>
-    <p>Start: {{subscription.startDate}}</p>
-    <p>End: {{subscription.endDate}}</p>
-    <p>Expired: {{subscription.expired}}</p>
-    <p>Suggest Renew: {{subscription.suggestRenewal}}</p>
-    <button type="button" class="btn btn-danger" (click)="cancelSubscription(subscription.tokenId)" [disabled]="subscription.expired">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="renewSubscription(subscription.tokenId)" [disabled]="!subscription.suggestRenewal">Renew</button>
+  <div class="text-center mb-5">
+    <h5>
+      <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
+      <span class="px-1">/</span>
+    </h5> 
+    <h1>My Subscriptions</h1>
+  </div>
 
+  <div class="cdk-overlay-container" [hidden]="!submitting">
+    <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
+    <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+      <div id="cdk-overlay-0" class="cdk-overlay-pane" style="max-width: 80vw; position: static;">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+  
+  <div [hidden]="txId != null">
+
+    <mat-spinner [hidden]="!loading" class="m-auto"></mat-spinner>
+    <div class="row" [hidden]="model.length > 0 || loading"><h4 class="text-center">You have no Subscriptions at this time</h4></div>
+    <div class="row" [hidden]="loading" >
+      <div class="col-xl-6" *ngFor="let subscription of model">        
+        <div class="card mb-4" [ngClass]="subscription.expired ? 'border-danger' : 'border-success'">
+          <div class="card-header"><h2 class="m-0">{{subscription.service.config.name}}</h2></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-4 mb-4"><p class="text-muted">Start Date</p> {{subscription.startDate | date:'medium'}}</div>
+              <div class="col-sm-4 mb-4"><p class="text-muted">End Date</p> {{subscription.endDate | date:'medium'}}</div>
+              <div class="col-sm-4 mb-4">
+                <p class="text-muted">Status</p> 
+                <div *ngIf="subscription.expired; then expired else active"></div>
+                <ng-template #expired><span class="badge bg-danger">Expired</span></ng-template>
+                <ng-template #active><span class="badge bg-success">Active</span></ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col overflow-hidden"><p class="text-muted">Subscription Token Id</p>{{subscription.tokenId}}</div>
+            </div>
+          </div>
+          <div class="card-footer">
+              <button type="button" class="btn btn-primary float-right ml-3" (click)="renewSubscription(subscription.tokenId)" [disabled]="!subscription.suggestRenewal">Renew</button>
+              <button type="button" class="btn btn-danger float-right" (click)="cancelSubscription(subscription.tokenId)" [disabled]="subscription.expired">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-outline-secondary" (click)="loadSubscriptions()" [hidden]="loading">Refresh</button>
+    </div>
+  </div>
+  
+  <div [hidden]="txId == null">
+    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
+      <h2 class="alert-heading"><span [hidden]="renewed">Renewed</span><span [hidden]="!renewed">Canceled</span> Successfully!</h2>
+      <span class="checkmark">
+        <div class="checkmark_stem"></div>
+        <div class="checkmark_kick"></div>
+      </span>
+      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+    </div>
   </div>
 </div>

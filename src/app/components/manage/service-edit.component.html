@@ -1,0 +1,121 @@
+<div class="container">
+
+  <div class="text-center mb-5">
+    <h5>
+      <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
+      <span class="px-1">/</span>
+      <span type="button" (click)="nav('/manager')" class="m-0">Services</span>
+      <span class="px-1">/</span>
+    </h5> 
+    <h1 class="text-lg"> 
+      <div *ngIf="configNFT != null; then edit else create"></div>
+      <ng-template #edit>Edit</ng-template>
+      <ng-template #create>Create</ng-template>
+      Service
+    </h1>
+  </div>
+
+  <div class="cdk-overlay-container" [hidden]="!submitting">
+    <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
+    <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+      <div id="cdk-overlay-0" class="cdk-overlay-pane" style="max-width: 80vw; position: static;">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+
+  <h2 [hidden]="!failToLoad">Failed to load Service with Config NFT of <em>{{configNFT}}</em></h2>
+
+  <form (ngSubmit)="submitService()" #configForm="ngForm" [hidden]="failToLoad || txId != null">
+    <div class="card mb-4 border-dark">
+      <div class="card-header">
+        <h2 class="mb-0">
+          <div *ngIf="configNFT != null; then edit else create"></div>
+          <ng-template #edit>Edit</ng-template>
+          <ng-template #create>Create</ng-template>
+          Service
+        </h2>
+      </div>
+      <div class="card-body">
+          <div class="form-group">
+            <label for="name" class="text-muted">Name</label>
+            <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
+            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Name is required
+            </div>
+          </div>
+    
+          <div class="form-group">
+            <label for="description" class="text-muted">Description</label>
+            <input type="text" class="form-control" id="description" required [(ngModel)]="model.description" name="description" #description="ngModel">
+            <div [hidden]="description.valid || description.pristine" class="alert alert-danger">
+              Description is required
+            </div>
+          </div>
+    
+          <div class="form-group">
+            <label for="fee" class="text-muted">Fee</label>
+            <span class="float-right">
+              <span class="badge badge-dark ml-3" role="button" (click)="setFee(1)">1 ERG</span> 
+              <span class="badge badge-dark ml-3" role="button" (click)="setFee(10)">10 ERG</span> 
+              <span class="badge badge-dark ml-3" role="button" (click)="setFee(50)">50 ERG</span>
+            </span>
+            <input class="form-control" id="fee" required [(ngModel)]="model.fee" name="fee" #fee="ngModel" type="number" min="0.01">
+            <div [hidden]="fee.valid || fee.pristine" class="alert alert-danger">
+              Fee is required
+            </div>
+          </div>
+    
+          <div class="form-group">
+            <label for="length" class="text-muted">Length: </label> {{ model.length | millisecondToTime }}
+            <span class="float-right">
+              <span class="badge badge-dark ml-3" role="button" (click)="setLength(86400000)">Day</span> 
+              <span class="badge badge-dark ml-3" role="button" (click)="setLength(604800000)">Week</span> 
+              <span class="badge badge-dark ml-3" role="button" (click)="setLength(2592000000)">Month</span>
+              <span class="badge badge-dark ml-3" role="button" (click)="setLength(31536000000)">Year</span>
+            </span>
+            <br>
+            <span class="badge badge-dark ml-3" role="button" (click)="addLength(-86400000)">- Day</span> 
+            <span class="badge badge-dark ml-3" role="button" (click)="addLength(86400000)">+ Day</span> 
+            <span class="badge badge-dark ml-3" role="button" (click)="addLength(-604800000)">- Week</span> 
+            <span class="badge badge-dark ml-3" role="button" (click)="addLength(604800000)">+ Week</span> 
+            <span class="badge badge-dark ml-3" role="button" (click)="addLength(-2592000000)">- Month</span>
+            <span class="badge badge-dark ml-3" role="button" (click)="addLength(2592000000)">+ Month</span>
+            <mat-slider min="3600000" max="31536000000" step="3600000" width="100%">
+              <input matSliderThumb [(ngModel)]="model.length" name="length" #length="ngModel">
+            </mat-slider>
+          </div>
+    
+          <div class="form-group">
+            <label for="address" class="text-muted">Address</label>
+            <input type="text" class="form-control" id="address" [(ngModel)]="model.address" name="address" #address="ngModel">
+            <small class="text-warning">Note: Payments will be sent to this wallet address and you will need access to edit this service.</small>
+          </div>
+      </div>
+      <div class="card-footer">   
+        <button type="button" class="btn btn-secondary" (click)="nav('/manager')">Cancel</button>
+        <button type="submit" class="btn btn-success float-right" [disabled]="!configForm.form.valid">Submit</button>      
+      </div>
+    </div>  
+  </form>  
+
+  <div [hidden]="txId == null">
+    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
+      <h2 class="alert-heading">Service       
+        <span *ngIf="configNFT != null; then edited else created"></span>
+        <ng-template #edited>Edited</ng-template>
+        <ng-template #created>Created</ng-template>
+        Successfully!</h2>
+      <span class="checkmark">
+        <div class="checkmark_stem"></div>
+        <div class="checkmark_kick"></div>
+      </span>
+      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+      <div>
+        <button type="button" class="btn btn-secondary mt-4" (click)="nav('/manager')">Back to Services</button>
+      </div>
+    </div>
+  </div>
+
+</div>

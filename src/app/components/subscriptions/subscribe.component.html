@@ -1,4 +1,36 @@
 <div class="container">
-  <button type="button" (click)="subscribe('3efab3a23890e70ff5e3ea3cdad0a1c7fc25ff12e562853667e26e56593eef0e')" class="btn btn-success">Subscribe</button>
-  <mat-spinner [hidden]="!submitting"></mat-spinner>
+
+  <div class="text-center mb-5">
+    <h5>
+      <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
+      <span class="px-1">/</span>
+    </h5> 
+    <h1>Subscribe</h1>
+  </div>
+
+  <div class="cdk-overlay-container" [hidden]="!submitting">
+    <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
+    <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+      <div id="cdk-overlay-0" class="cdk-overlay-pane" style="max-width: 80vw; position: static;">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center" [hidden]="txId != null">
+    <button type="button" (click)="subscribe()" class="btn btn-success">Subscribe</button>
+  </div>
+
+  <div [hidden]="txId == null">
+    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
+      <h2 class="alert-heading">Subscribed Successfully!</h2>
+      <span class="checkmark">
+        <div class="checkmark_stem"></div>
+        <div class="checkmark_kick"></div>
+      </span>
+      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+    </div>
+  </div>
+
 </div>

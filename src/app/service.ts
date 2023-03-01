@@ -1,12 +1,14 @@
 import { LENGTH_IN_MILISECONDS, ONE_ERG_IN_NANOERG, Service, ServiceConfig } from "sigma-subscriptions";
+import { msToTime } from "./util";
 
 export class Config {
 
   configNFT: string = '';
-  name: string = 'Service Name';
-  description: string = 'Service Description';
+  name: string = '';
+  description: string = '';
   fee: number = 0.01;
-  length: number = Number(LENGTH_IN_MILISECONDS.MINUTES_15);
+  length: number = Number(LENGTH_IN_MILISECONDS.MONTH);
+  lengthDisplay: string = msToTime(Number(LENGTH_IN_MILISECONDS.MONTH));
   address: string = '';
 
   constructor(config?: ServiceConfig) {
@@ -16,6 +18,7 @@ export class Config {
       this.description = config.description;
       this.fee = (Number(config.fee) / ONE_ERG_IN_NANOERG);
       this.length = Number(config.length);
+      this.lengthDisplay = msToTime(Number(config.length));
       this.address = config?.address;
     }
   }
@@ -36,7 +39,7 @@ export class Config {
 export class SubscriptionService {
 
   config: Config = new Config();  
-  tokenId: string = '';
+  tokenId: string | undefined = '';
 
   constructor(service?: Service) {
     if (service) {

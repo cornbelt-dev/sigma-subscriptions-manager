@@ -66,7 +66,6 @@ export class WalletDialogComonent {
 
   onSelect(wallet: string): void {
     this.dialogRef.close(wallet);
-  }
-  
+  } 
 
 }

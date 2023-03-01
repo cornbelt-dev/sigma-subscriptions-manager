@@ -4,6 +4,8 @@ import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { SigmaSubscriptions } from 'sigma-subscriptions';
 import { Box, Amount, Network } from '@fleet-sdk/common';
 import { WalletService } from 'src/app/wallet.service';
+import { ManagerService } from 'src/app/manager.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'subscribe',
@@ -12,22 +14,42 @@ import { WalletService } from 'src/app/wallet.service';
 
 export class SubscribeComponent {
 
-  constructor(private walletService: WalletService) {}
+  constructor(private walletService: WalletService, private managerService: ManagerService, private router: Router, private route: ActivatedRoute) {}
 
   submitting = false;
-  async subscribe(serviceTokenId: string) {
+  tokenId: string | null = null;
+  txId: string | null = null;
+
+  async ngOnInit() {
+    this.tokenId = this.route.snapshot.paramMap.get('tokenId');
+    if (this.tokenId == null) {
+      this.nav("/");
+    }
+  }
+
+  async subscribe() {
     this.submitting = true;
-
-    const manager: SigmaSubscriptions = new SigmaSubscriptions(Network.Testnet);
-    debugger;
-    let startDate = new Date();
-    startDate.setHours(startDate.getHours() - 6);
-    const tx: UnsignedTransaction = await manager.subscribe(ergo!, serviceTokenId, startDate);
-
-    console.log(tx);
-    await this.walletService.signAndSend(tx);
-
+    const wallet = await this.walletService.getWallet();
+    if (wallet && this.tokenId) {
+      let startDate = new Date();
+      startDate.setHours(startDate.getHours() - 24);
+      const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId, startDate);
+      console.log(tx);
+      //const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId);
+      const txId = await this.walletService.signAndSend(tx);
+      if (txId) {
+        this.txId = txId;
+      }
+    }
     this.submitting = false;
+  }
+
+  nav(url: string) {
+    this.router.navigateByUrl(url);   
+  }
+
+  async clearTxId() {
+    this.txId = null;
   }
 
 }

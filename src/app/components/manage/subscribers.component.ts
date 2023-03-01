@@ -3,6 +3,9 @@ import { SigmaSubscriptions, Subscription } from 'sigma-subscriptions';
 import { UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { Network } from '@fleet-sdk/common';
 import { WalletService } from 'src/app/wallet.service';
+import { ManagerService } from 'src/app/manager.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Config } from 'src/app/service';
 
 @Component({
   selector: 'subscribers',
@@ -11,21 +14,83 @@ import { WalletService } from 'src/app/wallet.service';
 
 export class SubscribersComponent {
 
-  constructor(private walletService: WalletService) {}
+  constructor(private walletService: WalletService, private manager: ManagerService, private router: Router, private route: ActivatedRoute) {}
 
-  model: Subscription[] = [];
+  tokenId: string | null = null;
+  subscribers: Subscription[] = [];
+  expiredSubscribers: Subscription[] = [];
+  title: string = "";
+  titleExpired: string = "";
+  loading: boolean = false;
+  submitting: boolean = false;
+  txId: string | null = null;
 
-  manager: SigmaSubscriptions = new SigmaSubscriptions(Network.Testnet);
-
-  async loadSubscriptions(serviceTokenId: string) {
-    let subscriptions: Subscription[] = await this.manager.getSubscriptions(serviceTokenId);
-    this.model = subscriptions;
+  async ngOnInit() {
+    this.tokenId = this.route.snapshot.paramMap.get('tokenId');
+    if (this.tokenId != null) {
+      await this.loadSubscriptions();
+    } else {
+      this.router.navigateByUrl("/manager");      
+    }
   }
 
-  async collectSubscription(boxId: string) {
-    let tx: UnsignedTransaction = await this.manager.collect(ergo!, boxId);
-    console.log(tx);
-    this.walletService.signAndSend(tx);
+  async loadSubscriptions() {
+    this.loading = true;
+    if (this.tokenId) {
+      const subscriptions: Subscription[] = await this.manager.sigmaSubscriptions.getSubscriptions(this.tokenId);
+      this.subscribers = subscriptions.filter(s => !s.expired);
+      if (this.subscribers.length > 0) {
+        this.title = this.subscribers.length + " Active Subscriber" + (this.subscribers.length > 1 ?"s":"") + " to " + this.subscribers[0].service.config.name;
+      }
+      this.expiredSubscribers = subscriptions.filter(s => s.expired);
+      if (this.expiredSubscribers.length > 0) {
+        this.titleExpired = this.expiredSubscribers.length + " Expired Subscription" + (this.expiredSubscribers.length > 1 ?"s":"") + " ready to collect";
+      }
+    } else {
+      this.router.navigateByUrl("/manager");      
+    }
+    this.loading = false;
+  }
+
+  async collectSubscription(boxId: string) {    
+    this.submitting = true;
+    const wallet = await this.walletService.getWallet();
+    if (wallet) {    
+      let tx: UnsignedTransaction = await this.manager.sigmaSubscriptions.collect(wallet, boxId);
+      const txId = await this.walletService.signAndSend(tx);
+      if (txId)
+      {
+        this.txId = txId;
+        this.expiredSubscribers = this.expiredSubscribers.filter(s => s.boxId != boxId);
+      }
+    }
+    this.submitting = false;
+  }
+  
+  async collectAll() {
+    this.submitting = true;
+    const wallet = await this.walletService.getWallet();
+    if (wallet) {    
+      const boxIds = this.expiredSubscribers.map(s => s.boxId);
+      let tx: UnsignedTransaction = await this.manager.sigmaSubscriptions.collectBulk(wallet, boxIds);
+      console.log(tx);
+      const txId = await this.walletService.signAndSend(tx);
+      if (txId)
+      {
+        this.txId = txId;        
+        this.expiredSubscribers = [];
+      }
+    }
+    this.submitting = false;
+  }
+
+  async clearTxId() {
+    this.txId = null;
+    await this.loadSubscriptions();
+  }
+
+  nav(url: string) {
+    this.router.navigateByUrl(url);   
   }
 
 }
