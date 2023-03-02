@@ -66,7 +66,7 @@ export class ServiceEditComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = txId;
+        this.txId = this.manager.explorerUrl + txId;
       }
     }
     this.submitting = false;

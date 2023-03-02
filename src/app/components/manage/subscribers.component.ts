@@ -58,7 +58,7 @@ export class SubscribersComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = txId;
+        this.txId = this.manager.explorerUrl + txId;
         this.expiredSubscribers = this.expiredSubscribers.filter(s => s.boxId != boxId);
       }
     }
@@ -75,7 +75,7 @@ export class SubscribersComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = txId;        
+        this.txId = this.manager.explorerUrl + txId;        
         this.expiredSubscribers = [];
       }
     }

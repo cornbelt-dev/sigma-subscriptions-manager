@@ -52,7 +52,7 @@ export class ServicesComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = txId;
+        this.txId = this.manager.explorerUrl + txId;
       }
     }
     this.launching = false;

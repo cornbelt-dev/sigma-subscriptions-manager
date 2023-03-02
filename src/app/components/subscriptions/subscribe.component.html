@@ -17,8 +17,24 @@
     </div>
   </div>
 
-  <div class="text-center" [hidden]="txId != null">
-    <button type="button" (click)="subscribe()" class="btn btn-success">Subscribe</button>
+  <div [hidden]="txId != null">
+    <div [hidden]="!loading"><mat-spinner class="mx-auto d-table mb-4"></mat-spinner></div>
+    <div class="card mb-4 border-dark mw-100 mx-auto" style="width: 500px;" [hidden]="loading">
+      <div class="card-header"><h2 class="m-0">{{service.config.name}}</h2></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col overflow-hidden mb-4"><p class="text-muted">Description</p> {{service.config.description}}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><p class="text-muted">Length</p> {{service.config.length | millisecondToTime }}</div>
+          <div class="col-sm-4"><p class="text-muted">Fee</p> {{service.config.fee}}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center">
+      <button type="button" (click)="subscribe()" class="btn btn-success">Subscribe</button>
+    </div>
   </div>
 
   <div [hidden]="txId == null">
@@ -29,7 +45,7 @@
         <div class="checkmark_stem"></div>
         <div class="checkmark_kick"></div>
       </span>
-      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+      <a href="{{txId}}" target="_blank">View Transaction</a>
     </div>
   </div>
 

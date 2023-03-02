@@ -26,16 +26,18 @@ export class SettingsComponent {
 export class SettingsEditComonent {
 
   networks = [{ key: "Mainnet", value: Network.Mainnet }, {key: "Testnet", value: Network.Testnet }];
-  model: Settings = { network: environment.envVar.Network, apiUrl: environment.envVar.API_URL };
+  model: Settings = { network: environment.envVar.Network, apiUrl: environment.envVar.API_URL, explorerUrl: environment.envVar.ExplorerUrl };
 
   constructor(public dialogRef: MatDialogRef<SettingsEditComonent>, private managerService: ManagerService) {
     this.model.network = managerService.sigmaSubscriptions.NetworkType;
     this.model.apiUrl = managerService.sigmaSubscriptions.API_URL;
+    this.model.explorerUrl = managerService.explorerUrl;
   }
 
   save() {
     this.managerService.setNetwork(this.model.network);
     this.managerService.setAPIUrl(this.model.apiUrl);
+    this.managerService.setExplorerUrl(this.model.explorerUrl);
     this.dialogRef.close();
   }
 
@@ -49,4 +51,5 @@ export class SettingsEditComonent {
 export type Settings = {  
   network: Network;
   apiUrl: string;
+  explorerUrl: string;
 }

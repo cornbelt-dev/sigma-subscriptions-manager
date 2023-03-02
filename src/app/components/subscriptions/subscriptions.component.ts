@@ -13,7 +13,6 @@ import { ManagerService } from 'src/app/services/manager.service';
 export class SubscriptionsComponent {
 
   model: Subscription[] = [];
-
   loading: boolean = false;
   submitting: boolean = false;
   txId: string | null = null;
@@ -45,7 +44,7 @@ export class SubscriptionsComponent {
         let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.cancel(wallet, subscriptionToken);
         const txId = await this.walletService.signAndSend(tx);
         if (txId) {
-          this.txId = txId;
+          this.txId = this.managerService.explorerUrl + txId;
           this.renewed = false;
         }
       }
@@ -62,7 +61,7 @@ export class SubscriptionsComponent {
         let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.renew(wallet, subscriptionToken);
         const txId = await this.walletService.signAndSend(tx);
         if (txId) {
-          this.txId = txId;
+          this.txId = this.managerService.explorerUrl + txId;
           this.renewed = true;
         }
       }

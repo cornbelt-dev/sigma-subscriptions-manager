@@ -4,6 +4,7 @@ import { UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { WalletService } from 'src/app/services/wallet.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SubscriptionService } from 'src/app/service';
 
 @Component({
   selector: 'subscribe',
@@ -14,15 +15,21 @@ export class SubscribeComponent {
 
   constructor(private walletService: WalletService, private managerService: ManagerService, private router: Router, private route: ActivatedRoute) {}
 
-  submitting = false;
+  service: SubscriptionService = new SubscriptionService();
+  loading: boolean = false;
+  submitting: boolean = false;
   tokenId: string | null = null;
   txId: string | null = null;
 
   async ngOnInit() {
+    this.loading = true;
     this.tokenId = this.route.snapshot.paramMap.get('tokenId');
-    if (this.tokenId == null) {
+    if (this.tokenId) {
+      this.service = new SubscriptionService(await this.managerService.sigmaSubscriptions.getServiceByTokenId(this.tokenId));
+    } else {
       this.nav("/");
     }
+    this.loading = false;
   }
 
   async subscribe() {
@@ -36,7 +43,7 @@ export class SubscribeComponent {
       //const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId);
       const txId = await this.walletService.signAndSend(tx);
       if (txId) {
-        this.txId = txId;
+        this.txId = this.managerService.explorerUrl + txId;
       }
     }
     this.submitting = false;

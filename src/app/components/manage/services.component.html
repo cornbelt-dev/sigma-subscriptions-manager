@@ -31,7 +31,7 @@
           <div class="card-header">
             <h2 class="float-left m-0 pt-1">{{service.config.name}}</h2>
             <a class="btn btn-primary float-right ml-2" [routerLink]="['/service', service.config.configNFT]">Edit</a>
-            <a class="btn btn-secondary float-right ml-2" [routerLink]="['/subscribers', service.tokenId]" [hidden]="service.tokenId == undefined">View</a>
+            <a class="btn btn-secondary float-right ml-2" [routerLink]="['/subscribers', service.tokenId]" [hidden]="service.tokenId == undefined">Subscribers</a>
           </div>
           <div class="card-body">
             <div class="row">
@@ -39,7 +39,7 @@
             </div>
             <div class="row">
               <div class="col-sm-6 mb-4"><p class="text-muted">Length</p> {{service.config.lengthDisplay}}</div>
-              <div class="col-sm-6 mb-4"><p class="text-muted">Fee <span class="badge badge-secondary">ERG</span></p> {{service.config.fee}}</div>
+              <div class="col-sm-6 mb-4"><p class="text-muted">Fee <span class="badge badge-secondary ml-2">ERG</span></p> {{service.config.fee}}</div>
             </div>
             <div class="row">            
               <div class="col overflow-hidden">
@@ -48,7 +48,8 @@
                   <button type="button" class="btn btn-success" (click)="launchService(service.config.configNFT)">Launch Service</button>
                 </ng-template>
                 <ng-template #show>
-                  <p class="text-muted">Service Token Id</p> {{service.tokenId}}
+                  <p class="text-muted">Service Token Id <a href="/subscribe/{{service.tokenId}}" target="_blank" class="badge text-white bg-success bg-hover-success pt-2 pb-1 ml-2">Subscribe Link</a></p> 
+                  {{service.tokenId}}
                 </ng-template>
               </div>
             </div>
@@ -70,7 +71,7 @@
         <div class="checkmark_stem"></div>
         <div class="checkmark_kick"></div>
       </span>
-      <a href="https://tn-ergo-explorer.anetabtc.io/en/transactions/{{txId}}" target="_blank">View Transaction</a>
+      <a href="{{txId}}" target="_blank">View Transaction</a>
     </div>
   </div>
 </div>

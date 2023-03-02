@@ -3,6 +3,7 @@ import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dia
 import { Router } from '@angular/router';
 import { EIP12ErgoAPI } from '@nautilus-js/eip12-types';
 import { WalletService } from 'src/app/services/wallet.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'wallet',
@@ -95,6 +96,7 @@ export class WalletDialogComonent {
                 <div mat-dialog-content>
                   <h2>Connected Wallet</h2>
                   <p class="text-break">{{data.address}}</p>
+                  <h3 class="badge p-3 bg-success" [hidden]="!subscriber">You are a Sigma Subscriptions Subscriber!</h3>
                 </div>
                 <div mat-dialog-actions>
                   <button class="btn btn-dark" (click)="close()">Close</button>
@@ -102,8 +104,11 @@ export class WalletDialogComonent {
               </div>`,
 })
 export class AddressDialogComonent {
-  constructor(public dialogRef: MatDialogRef<WalletDialogComonent>, 
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+  subscriber: boolean = false;
+  constructor(public dialogRef: MatDialogRef<WalletDialogComonent>, private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.subscriber = authService.isSubscriber;
+    }
 
   close(): void {
     this.dialogRef.close();

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class WalletService {
 
   private requestWalletConnectSubject = new Subject<any>();
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   connectedWallet : "nautilus" | "safew" | string | undefined = localStorage.getItem("connectedWallet") ?? undefined;
 
@@ -47,16 +48,19 @@ export class WalletService {
           this.wallet = ergo;
           this.connectedWallet = wallet;
           localStorage.setItem("connectedWallet", wallet);
+          await this.authService.login(ergo);
         } else {
           const granted = await walletConnector.connect();
           if (granted) {
             this.wallet = await walletConnector.getContext();
             this.connectedWallet = wallet;
             localStorage.setItem("connectedWallet", wallet);
+            await this.authService.login(ergo);
           } else {
             this.wallet = undefined;
             this.connectedWallet = undefined;
             localStorage.removeItem("connectedWallet");
+            this.authService.logout();
           }
         }   
       }   
@@ -76,6 +80,7 @@ export class WalletService {
     this.wallet = undefined;
     this.connectedWallet = undefined;
     localStorage.removeItem("connectedWallet");
+    this.authService.logout();
 
     return this.wallet;
   }
