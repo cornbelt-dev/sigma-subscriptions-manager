@@ -1,8 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Network } from '@fleet-sdk/common';
-import { FormControl, NgForm } from '@angular/forms';
-import { ManagerService } from '../manager.service';
+import { ManagerService } from '../services/manager.service';
 import { environment } from '../environments/environment';
 
 @Component({

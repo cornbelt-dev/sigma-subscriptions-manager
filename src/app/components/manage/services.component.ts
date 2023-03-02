@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
-import { Service, ONE_ERG_IN_NANOERG, ServiceConfig } from 'sigma-subscriptions';
+import { Service, ServiceConfig } from 'sigma-subscriptions';
 import { Config, SubscriptionService } from 'src/app/service';
-import { WalletService } from 'src/app/wallet.service';
+import { WalletService } from 'src/app/services/wallet.service';
 import { Router } from '@angular/router';
-import { ManagerService } from 'src/app/manager.service';
+import { ManagerService } from 'src/app/services/manager.service';
 
 @Component({
   selector: 'services',

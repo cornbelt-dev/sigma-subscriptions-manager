@@ -6,6 +6,7 @@ import { DashboardComponent } from './components/dashboard.component';
 import { ServiceEditComponent } from './components/manage/service-edit.component';
 import { SubscribersComponent } from './components/manage/subscribers.component';
 import { SubscribeComponent } from './components/subscriptions/subscribe.component';
+import { PageNotFoundComponent } from './components/404-component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'service/:configNFT', component: ServiceEditComponent },
   { path: 'subscribers/:tokenId', component: SubscribersComponent },
   { path: 'subscribe/:tokenId', component: SubscribeComponent },
+  { path: '**', pathMatch: 'full', component: PageNotFoundComponent },
 ];
 
 @NgModule({

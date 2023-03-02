@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { SigmaSubscriptions, Subscription } from 'sigma-subscriptions';
+import { Subscription } from 'sigma-subscriptions';
 import { UnsignedTransaction } from '@nautilus-js/eip12-types';
-import { Network } from '@fleet-sdk/common';
 import { Router } from '@angular/router';
-import { WalletService } from 'src/app/wallet.service';
-import { ManagerService } from 'src/app/manager.service';
+import { WalletService } from 'src/app/services/wallet.service';
+import { ManagerService } from 'src/app/services/manager.service';
 
 @Component({
   selector: 'subscriptions',

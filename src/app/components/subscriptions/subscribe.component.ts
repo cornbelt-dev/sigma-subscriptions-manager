@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 
-import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
-import { SigmaSubscriptions } from 'sigma-subscriptions';
-import { Box, Amount, Network } from '@fleet-sdk/common';
-import { WalletService } from 'src/app/wallet.service';
-import { ManagerService } from 'src/app/manager.service';
+import { UnsignedTransaction } from '@nautilus-js/eip12-types';
+import { WalletService } from 'src/app/services/wallet.service';
+import { ManagerService } from 'src/app/services/manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

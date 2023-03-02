@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
-import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
-import { SigmaSubscriptions, ServiceConfig, Service, Subscription, SigmaSubscriptionsAuthResponse, LENGTH_IN_MILISECONDS, ONE_ERG_IN_NANOERG } from 'sigma-subscriptions';
-import { Box, Amount, Network } from '@fleet-sdk/common';
-import { Config } from '../../service';
-import { WalletService } from 'src/app/wallet.service';
+import { UnsignedTransaction } from '@nautilus-js/eip12-types';
+import { SigmaSubscriptions, ServiceConfig, ONE_ERG_IN_NANOERG } from 'sigma-subscriptions';
+import { Network } from '@fleet-sdk/common';
+import { Config } from 'src/app/service';
+import { WalletService } from 'src/app/services/wallet.service';
 
 @Component({
   selector: 'configs',

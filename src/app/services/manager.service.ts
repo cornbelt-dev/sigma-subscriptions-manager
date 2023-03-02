@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@fleet-sdk/common';
 import { SigmaSubscriptions } from 'sigma-subscriptions';
-import { environment } from './environments/environment';
+import { environment } from 'src/app/environments/environment';
 
 @Injectable({
   providedIn: 'root'

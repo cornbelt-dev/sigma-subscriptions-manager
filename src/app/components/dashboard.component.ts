@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { WalletService } from '../wallet.service';
-import { WalletComponent } from './wallet.component';
+import { WalletService } from '../services/wallet.service';
 
 @Component({
   selector: 'dashboard',

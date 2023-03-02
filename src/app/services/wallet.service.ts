@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WalletService {
+
+  private requestWalletConnectSubject = new Subject<any>();
 
   constructor() { }
 
@@ -13,6 +15,12 @@ export class WalletService {
 
   wallet: EIP12ErgoAPI | undefined;
   
+  requsetWalletConnectObservable = this.requestWalletConnectSubject.asObservable();  
+  
+  async requestWalletConnect(redirectUrl: string) {
+    this.requestWalletConnectSubject.next(redirectUrl);    
+  }
+
   async setWallet(wallet: EIP12ErgoAPI | undefined) {
     this.wallet = wallet;
   }
@@ -82,12 +90,6 @@ export class WalletService {
       console.log(ex);
       return undefined;
     }
-  }
-  
-  private requsetWalletConnectSubject = new Subject<any>();
-  requsetWalletConnectObservable = this.requsetWalletConnectSubject.asObservable();  
-  async requestWalletConnect(redirectUrl: string) {
-    this.requsetWalletConnectSubject.next(redirectUrl);    
   }
 
 }

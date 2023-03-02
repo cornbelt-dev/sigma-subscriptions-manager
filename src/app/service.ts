@@ -1,5 +1,5 @@
 import { LENGTH_IN_MILISECONDS, ONE_ERG_IN_NANOERG, Service, ServiceConfig } from "sigma-subscriptions";
-import { msToTime } from "./util";
+import { msToTime } from "src/app/util";
 
 export class Config {
 

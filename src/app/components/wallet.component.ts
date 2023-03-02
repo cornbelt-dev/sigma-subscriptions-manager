@@ -1,8 +1,8 @@
 import { Component, Inject, Renderer2 } from '@angular/core';
 import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
-import { WalletService } from '../wallet.service';
+import { EIP12ErgoAPI } from '@nautilus-js/eip12-types';
+import { WalletService } from 'src/app/services/wallet.service';
 
 @Component({
   selector: 'wallet',
@@ -93,6 +93,7 @@ export class WalletDialogComonent {
   selector: 'address-dialog',
   template: `<div class="p-5 pb-4 text-center ">
                 <div mat-dialog-content>
+                  <h2>Connected Wallet</h2>
                   <p class="text-break">{{data.address}}</p>
                 </div>
                 <div mat-dialog-actions>
