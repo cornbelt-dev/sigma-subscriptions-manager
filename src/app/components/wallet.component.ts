@@ -1,4 +1,4 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Inject, Renderer2 } from '@angular/core';
 import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { EIP12ErgoAPI, UnsignedTransaction } from '@nautilus-js/eip12-types';
@@ -16,11 +16,22 @@ export class WalletComponent {
   address: string | undefined = 'Connect Wallet';
   connected: boolean = false;
 
-  constructor(public dialog: MatDialog, private walletService: WalletService, private router: Router) { }
+  constructor(public dialog: MatDialog, 
+    private renderer2: Renderer2,
+    private walletService: WalletService, 
+    private router: Router) { }
 
   async ngOnInit() {
     this.wallet = await this.walletService.getWallet();
     await this.setWalletStatus();
+    
+    this.walletService.requsetWalletConnectObservable.subscribe(async (redirectUrl?: string) => {
+      await this.openWalletConnect(redirectUrl);
+    });
+    
+    this.renderer2.listen("window", "ergo_wallet_disconnected", event => {
+      this.disconnectWallet(event);
+    });
   }
 
   async connectWallet(wallet: string) {
@@ -45,22 +56,21 @@ export class WalletComponent {
     }
   }
 
-  openWalletConnect() {
+  async openWalletConnect(redirectUrl?: string) {
     const dialogRef = this.dialog.open(WalletDialogComonent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-        this.connectWallet(result)
+        await this.connectWallet(result);
+        if (redirectUrl) {
+          this.router.navigateByUrl(redirectUrl);
+        }
       }
     });
   }
 
   openAddress() {
     this.dialog.open(AddressDialogComonent, { data: { address: this.address }});
-  }
-
-  openSettings() {
-
   }
 
 }

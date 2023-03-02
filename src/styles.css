@@ -12,9 +12,14 @@ a { text-decoration: none !important; }
 
 .title { font-family: 'Covered By Your Grace', cursive; }
 .title span { font-size: 50px; margin: 0 -5px 0 0; top: 2px; position: relative; }
+.dashboard-title { font-family: 'Covered By Your Grace', cursive !important; color: var(--bs-link-color); font-size: 75px !important; margin: 70px 0 !important; }
+.dashboard-title span { font-size: 150px; margin: 0 -30px 0 0; top: 2px; position: relative; }
+@media (max-width: 568px) {
+  .dashboard-title { font-size: 40px !important; margin: 30px 0 !important; }
+  .dashboard-title span { font-size: 80px !important; margin: 0 -12px 0 0; }
+}
+
 .navbar { --bs-bg-opacity: 0.8; }
-
-
 .card { --bs-bg-opacity: 0.8; --bs-card-bg: rgba(48, 48, 48, .85); }
 .card-header, .card-footer { --bs-card-cap-bg: rgb(68, 68, 68, .5); }
 .alert-success { background-color: rgb(0 188 140 / 80%); }
