@@ -21,7 +21,6 @@ export class SubscribersComponent {
   titleExpired: string = "";
   loading: boolean = false;
   submitting: boolean = false;
-  txId: string | null = null;
 
   async ngOnInit() {
     this.tokenId = this.route.snapshot.paramMap.get('tokenId');
@@ -58,8 +57,7 @@ export class SubscribersComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = this.manager.explorerUrl + txId;
-        this.expiredSubscribers = this.expiredSubscribers.filter(s => s.boxId != boxId);
+        this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "collect", tx: tx }});
       }
     }
     this.submitting = false;
@@ -75,16 +73,10 @@ export class SubscribersComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = this.manager.explorerUrl + txId;        
-        this.expiredSubscribers = [];
+        this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "collect", tx: tx }});
       }
     }
     this.submitting = false;
-  }
-
-  async clearTxId() {
-    this.txId = null;
-    await this.loadSubscriptions();
   }
 
   nav(url: string) {

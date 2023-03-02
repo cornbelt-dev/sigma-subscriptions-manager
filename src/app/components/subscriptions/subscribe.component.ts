@@ -19,7 +19,6 @@ export class SubscribeComponent {
   loading: boolean = false;
   submitting: boolean = false;
   tokenId: string | null = null;
-  txId: string | null = null;
 
   async ngOnInit() {
     this.loading = true;
@@ -37,13 +36,13 @@ export class SubscribeComponent {
     const wallet = await this.walletService.getWallet();
     if (wallet && this.tokenId) {
       let startDate = new Date();
-      startDate.setHours(startDate.getHours() - 24);
+      startDate.setHours(startDate.getHours() - 18);
       const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId, startDate);
       console.log(tx);
       //const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId);
       const txId = await this.walletService.signAndSend(tx);
       if (txId) {
-        this.txId = this.managerService.explorerUrl + txId;
+        this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "subscribe", tx: tx }});
       }
     }
     this.submitting = false;
@@ -51,10 +50,6 @@ export class SubscribeComponent {
 
   nav(url: string) {
     this.router.navigateByUrl(url);   
-  }
-
-  async clearTxId() {
-    this.txId = null;
   }
 
 }

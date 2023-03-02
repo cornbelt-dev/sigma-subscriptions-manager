@@ -8,6 +8,7 @@ import { SubscribersComponent } from './components/manage/subscribers.component'
 import { SubscribeComponent } from './components/subscriptions/subscribe.component';
 import { PageNotFoundComponent } from './components/404-component';
 import { AuthGuard } from './auth.guard';
+import { TransactionComponent } from './components/transaction.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'subscribers/:tokenId', component: SubscribersComponent, canActivate: [AuthGuard] },
   { path: 'subscriptions', component: SubscriptionsComponent },
   { path: 'subscribe/:tokenId', component: SubscribeComponent },
+  { path: 'transaction/:id', component: TransactionComponent },
   { path: '**', pathMatch: 'full', component: PageNotFoundComponent },
 ];
 

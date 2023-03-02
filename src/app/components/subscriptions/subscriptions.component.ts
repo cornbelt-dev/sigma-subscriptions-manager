@@ -16,7 +16,6 @@ export class SubscriptionsComponent {
   loading: boolean = false;
   submitting: boolean = false;
   txId: string | null = null;
-  renewed: boolean = false;
 
   constructor(private walletService: WalletService, private managerService: ManagerService, private router: Router) { }
 
@@ -44,8 +43,7 @@ export class SubscriptionsComponent {
         let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.cancel(wallet, subscriptionToken);
         const txId = await this.walletService.signAndSend(tx);
         if (txId) {
-          this.txId = this.managerService.explorerUrl + txId;
-          this.renewed = false;
+          this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "cancel", tx: tx }});
         }
       }
     }
@@ -61,17 +59,11 @@ export class SubscriptionsComponent {
         let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.renew(wallet, subscriptionToken);
         const txId = await this.walletService.signAndSend(tx);
         if (txId) {
-          this.txId = this.managerService.explorerUrl + txId;
-          this.renewed = true;
+          this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "renew", tx: tx }});
         }
       }
     }
     this.submitting = false;
-  }
-
-  async clearTxId() {
-    this.txId = null;
-    await this.loadSubscriptions();
   }
 
   nav(url: string) {

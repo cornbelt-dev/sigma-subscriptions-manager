@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Network } from '@fleet-sdk/common';
+import { Amount, Box, Network } from '@fleet-sdk/common';
 import { SigmaSubscriptions } from 'sigma-subscriptions';
 import { environment } from 'src/app/environments/environment';
 
@@ -16,6 +16,18 @@ export class ManagerService {
     const apiUrl: string | undefined = localStorage.getItem("apiUrl") ?? environment.envVar.API_URL;
     this.sigmaSubscriptions = new SigmaSubscriptions(network, apiUrl);
     this.explorerUrl = localStorage.getItem("explorerUrl") ?? environment.envVar.ExplorerUrl;
+  }
+
+  async checkTxStatus(txId: string): Promise<number> {
+    try {
+      const tx = await fetch(this.sigmaSubscriptions.API_URL + 'transactions/' + txId).then(resp => resp.json());
+      if (tx) {
+        if (tx.numConfirmations) {
+          return tx.numConfirmations;
+        }
+      }
+    } catch(e) { }
+    return 0;
   }
 
   reset() {

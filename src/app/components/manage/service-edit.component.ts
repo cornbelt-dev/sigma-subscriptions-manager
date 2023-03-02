@@ -29,7 +29,6 @@ export class ServiceEditComponent {
   configNFT: string | null = null;
   failToLoad: boolean = false;   
   submitting = false;
-  txId: string | null = null;
 
   async ngOnInit() {
     this.configNFT = this.route.snapshot.paramMap.get('configNFT');
@@ -66,14 +65,10 @@ export class ServiceEditComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = this.manager.explorerUrl + txId;
+        this.router.navigateByUrl("/transaction/" + txId, { state: { txType: this.configNFT == null ? "service-create" : "service-edit", tx: tx }});
       }
     }
     this.submitting = false;
-  }
-
-  clearTxId() {
-    this.txId = null;
   }
   
   setFee(fee: number) {

@@ -26,7 +26,7 @@
 
   <h2 [hidden]="!failToLoad">Failed to load Service with Config NFT of <em>{{configNFT}}</em></h2>
 
-  <form (ngSubmit)="submitService()" #configForm="ngForm" [hidden]="failToLoad || txId != null">
+  <form (ngSubmit)="submitService()" #configForm="ngForm" [hidden]="failToLoad">
     <div class="card mb-4 border-dark">
       <div class="card-header">
         <h2 class="mb-0">
@@ -98,24 +98,5 @@
       </div>
     </div>  
   </form>  
-
-  <div [hidden]="txId == null">
-    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
-      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
-      <h2 class="alert-heading">Service       
-        <span *ngIf="configNFT != null; then edited else created"></span>
-        <ng-template #edited>Edited</ng-template>
-        <ng-template #created>Created</ng-template>
-        Successfully!</h2>
-      <span class="checkmark">
-        <div class="checkmark_stem"></div>
-        <div class="checkmark_kick"></div>
-      </span>
-      <a href="{{txId}}" target="_blank">View Transaction</a>
-      <div>
-        <button type="button" class="btn btn-secondary mt-4" (click)="nav('/manager')">Back to Services</button>
-      </div>
-    </div>
-  </div>
 
 </div>

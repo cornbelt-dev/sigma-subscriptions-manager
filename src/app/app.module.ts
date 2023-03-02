@@ -13,12 +13,12 @@ import { DashboardComponent } from './components/dashboard.component';
 import { WalletComponent, WalletDialogComonent } from './components/wallet.component';
 import { SettingsComponent, SettingsEditComonent } from './components/settings.component';
 import { ManagerComponent } from './components/manage/manager.component';
-import { ConfigsComponent } from './components/manage/configs.component';
 import { ServicesComponent } from './components/manage/services.component';
 import { ServiceEditComponent } from './components/manage/service-edit.component';
 import { SubscribersComponent } from './components/manage/subscribers.component';
 import { SubscribeComponent } from './components/subscriptions/subscribe.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
+import { TransactionComponent } from './components/transaction.component';
 import { MillisecondToTimePipe } from './millisecond-to-time.pipe';
 
 @NgModule({
@@ -28,7 +28,6 @@ import { MillisecondToTimePipe } from './millisecond-to-time.pipe';
     WalletDialogComonent,
     SettingsComponent,
     SettingsEditComonent,
-    ConfigsComponent,
     ServicesComponent,
     ServiceEditComponent,
     SubscribersComponent,
@@ -36,6 +35,7 @@ import { MillisecondToTimePipe } from './millisecond-to-time.pipe';
     SubscriptionsComponent,
     ManagerComponent,
     DashboardComponent,
+    TransactionComponent,
     MillisecondToTimePipe
   ],
   imports: [

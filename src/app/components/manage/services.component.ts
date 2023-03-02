@@ -18,7 +18,6 @@ export class ServicesComponent {
   services: SubscriptionService[] = [];
   loading: boolean = false;
   launching: boolean = false;
-  txId: string | null = null;
   
   async ngOnInit() {
     await this.loadServices();
@@ -52,7 +51,7 @@ export class ServicesComponent {
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
-        this.txId = this.manager.explorerUrl + txId;
+        this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "launch", tx: tx }});
       }
     }
     this.launching = false;
@@ -64,11 +63,6 @@ export class ServicesComponent {
 
   editService(configNFT: string) {
     this.router.navigateByUrl("/service/" + configNFT);
-  }
-
-  async clearTxId() {
-    this.txId = null;
-    await this.loadServices();
   }
 
   nav(url: string) {

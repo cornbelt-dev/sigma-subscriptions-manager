@@ -1,0 +1,38 @@
+<div class="container">
+
+  <div class="text-center mb-5">
+    <h5>
+      <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
+      <span class="px-1">/</span>
+    </h5> 
+    <h1>Transaction</h1>
+  </div>
+
+  <div class="cdk-overlay-container" [hidden]="!loading">
+    <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
+    <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+      <div id="cdk-overlay-0" class="cdk-overlay-pane" style="max-width: 80vw; position: static;">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="loading || notFound">
+    <div class="alert text-center d-table mx-auto p-5" [ngClass]="txConfirmed ? 'alert-success' : ''">
+      <h2 class="alert-heading">{{title}}</h2>      
+      <div [hidden]="txConfirmed"><mat-spinner class="mx-auto d-table mb-4"></mat-spinner></div>
+      <span [hidden]="!txConfirmed" class="checkmark">
+        <div class="checkmark_stem"></div>
+        <div class="checkmark_kick"></div>
+      </span>
+      <a class="d-block" href="{{link}}" target="_blank">View Transaction</a>      
+      <button [hidden]="!txConfirmed" (click)="nav(action)" type="button" class="btn btn-dark mt-4">{{actionText}}</button>
+    </div>
+  </div>
+
+  <div [hidden]="loading || !notFound" class="text-center">
+    <h2>Transaction not found.</h2>
+    <button type="button" class="btn btn-outline-secondary" (click)="loadTransaction()" [hidden]="loading">Refresh</button>
+  </div>
+
+</div>

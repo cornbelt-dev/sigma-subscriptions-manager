@@ -17,8 +17,6 @@
     </div>
   </div>
   
-  <div [hidden]="txId != null">
-
     <mat-spinner [hidden]="!loading" class="m-auto"></mat-spinner>
     <div class="row" [hidden]="model.length > 0 || loading"><h4 class="text-center">You have no Subscriptions at this time</h4></div>
     <div class="row" [hidden]="loading" >
@@ -51,17 +49,5 @@
     <div class="text-center">
       <button type="button" class="btn btn-outline-secondary" (click)="loadSubscriptions()" [hidden]="loading">Refresh</button>
     </div>
-  </div>
   
-  <div [hidden]="txId == null">
-    <div class="alert alert-dismissible alert-success text-center d-table mx-auto p-5">
-      <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="clearTxId()"></button>
-      <h2 class="alert-heading"><span [hidden]="renewed">Renewed</span><span [hidden]="!renewed">Canceled</span> Successfully!</h2>
-      <span class="checkmark">
-        <div class="checkmark_stem"></div>
-        <div class="checkmark_kick"></div>
-      </span>
-      <a href="{{txId}}" target="_blank">View Transaction</a>
-    </div>
-  </div>
 </div>
