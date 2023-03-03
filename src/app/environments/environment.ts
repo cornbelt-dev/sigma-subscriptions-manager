@@ -9,6 +9,6 @@ export const environment = {
         ExplorerUrl: "https://explorer.ergoplatform.com/en/transactions/",
         AdminWalletAddress: "3WxYku3G2eUEpT8ZC6eJiwwr2PCxuFDd4AxPKv6zv2UuZQxjgsAE",
         AdminWalletConfigNFT: "",
-        SigmaSubscriptionTokenId: "37275a7d94c156d162ad0f8b783bd93ff4852fc4efca95c115bdc0976fc70adc"
+        SigmaSubscriptionTokenId: "79cfef3ce1202eadbe1a352c0b074ef0c01bd42287a125bd3dc3028b528b4e0a"
     }
   };

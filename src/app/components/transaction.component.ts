@@ -40,7 +40,7 @@ export class TransactionComponent {
     this.tx = history.state.tx;
     if (this.txId) {
       this.link = this.managerService.explorerUrl + this.txId;
-      this.checkTxObservable = interval(5 * 1000)
+      this.checkTxObservable = interval(10 * 1000)
         .pipe(mergeMap(() => this.managerService.checkTxStatus(this.txId!)))
         .subscribe((result) => {
           this.checks++;

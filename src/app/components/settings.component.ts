@@ -1,8 +1,8 @@
 import { Component, Inject, Optional } from '@angular/core';
 import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Network } from '@fleet-sdk/common';
-import { ManagerService } from '../services/manager.service';
-import { environment } from '../environments/environment';
+import { ManagerService } from 'src/app/services/manager.service';
+import { environment } from 'src/app/environments/environment';
 
 @Component({
   selector: 'settings',

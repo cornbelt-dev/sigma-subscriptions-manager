@@ -4,7 +4,7 @@
     <h5>
       <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
       <span class="px-1">/</span>
-      <span type="button" (click)="nav('/manager')" class="m-0">Services</span>
+      <span type="button" (click)="nav('/services')" class="m-0">Services</span>
       <span class="px-1">/</span>
     </h5> 
     <h1 class="text-lg"> 
@@ -93,7 +93,7 @@
           </div>
       </div>
       <div class="card-footer">   
-        <button type="button" class="btn btn-secondary" (click)="nav('/manager')">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="nav('/services')">Cancel</button>
         <button type="submit" class="btn btn-success float-right" [disabled]="!configForm.form.valid">Submit</button>      
       </div>
     </div>  

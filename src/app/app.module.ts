@@ -12,10 +12,9 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard.component';
 import { WalletComponent, WalletDialogComonent } from './components/wallet.component';
 import { SettingsComponent, SettingsEditComonent } from './components/settings.component';
-import { ManagerComponent } from './components/manage/manager.component';
-import { ServicesComponent } from './components/manage/services.component';
-import { ServiceEditComponent } from './components/manage/service-edit.component';
-import { SubscribersComponent } from './components/manage/subscribers.component';
+import { ServicesComponent } from './components/services/services.component';
+import { ServiceEditComponent } from './components/services/service-edit.component';
+import { SubscribersComponent } from './components/services/subscribers.component';
 import { SubscribeComponent } from './components/subscriptions/subscribe.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { TransactionComponent } from './components/transaction.component';
@@ -33,7 +32,6 @@ import { MillisecondToTimePipe } from './millisecond-to-time.pipe';
     SubscribersComponent,
     SubscribeComponent,
     SubscriptionsComponent,
-    ManagerComponent,
     DashboardComponent,
     TransactionComponent,
     MillisecondToTimePipe

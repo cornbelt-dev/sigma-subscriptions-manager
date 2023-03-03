@@ -4,6 +4,7 @@ import { UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { Router } from '@angular/router';
 import { WalletService } from 'src/app/services/wallet.service';
 import { ManagerService } from 'src/app/services/manager.service';
+import { SubscriptionDetails } from 'src/app/service';
 
 @Component({
   selector: 'subscriptions',
@@ -12,7 +13,7 @@ import { ManagerService } from 'src/app/services/manager.service';
 
 export class SubscriptionsComponent {
 
-  model: Subscription[] = [];
+  model: SubscriptionDetails[] = [];
   loading: boolean = false;
   submitting: boolean = false;
   txId: string | null = null;
@@ -29,7 +30,7 @@ export class SubscriptionsComponent {
     const wallet = await this.walletService.getWallet();
     if (wallet) {
       let services: Subscription[] = await this.managerService.sigmaSubscriptions.getSubscriptionsForWallet(wallet);
-      this.model = services.sort((a, b) => a.endDate! > b.endDate! ? -1 : a.endDate! < b.endDate! ? 1 : 0);
+      this.model = services.map(s => new SubscriptionDetails(s)).sort((a, b) => a.endDate! > b.endDate! ? -1 : a.endDate! < b.endDate! ? 1 : 0);
     }
     this.loading = false;
   }
@@ -41,6 +42,7 @@ export class SubscriptionsComponent {
       const wallet = await this.walletService.getWallet();
       if (wallet) {
         let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.cancel(wallet, subscriptionToken);
+        console.log(tx);
         const txId = await this.walletService.signAndSend(tx);
         if (txId) {
           this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "cancel", tx: tx }});

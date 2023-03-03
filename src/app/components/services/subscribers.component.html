@@ -4,17 +4,17 @@
     <h5>
       <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
       <span class="px-1">/</span>
-      <span type="button" (click)="nav('/manager')" class="m-0">Services</span>
+      <span type="button" (click)="nav('/services')" class="m-0">Services</span>
       <span class="px-1">/</span>
     </h5> 
     <h1 class="text-lg">Subscribers</h1>
   </div>
 
-  <h2 [hidden]="loading">{{title}}</h2>
+  <h2 [hidden]="loading" class="text-center">{{title}}</h2>
   <mat-spinner [hidden]="!loading" class="m-auto"></mat-spinner>
   <div class="row" [hidden]="subscribers.length > 0 || loading"><h4 class="text-center">You have no Subscribers at this time</h4></div>
   <div class="row" [hidden]="loading">
-    <div class="col-xl-6" *ngFor="let subscription of subscribers">        
+    <div class="col-xl-6 mx-auto" *ngFor="let subscription of subscribers">        
       <div class="card mb-4" [ngClass]="subscription.expired ? 'border-danger' : 'border-success'">
         <div class="card-header">
           <div class="m-0 py-1">{{subscription.walletAddress}}</div>
@@ -39,11 +39,11 @@
   </div>
 
     
-  <h2 [hidden]="loading">{{titleExpired}}
+  <h2 [hidden]="loading" class="text-center">{{titleExpired}}
     <!-- <button type="button" class="btn btn-primary float-right" (click)="collectAll()" [hidden]="expiredSubscribers.length == 0">Collect All</button> -->
   </h2>
   <div class="row" [hidden]="loading">
-    <div class="col-xl-6" *ngFor="let subscription of expiredSubscribers">        
+    <div class="col-xl-6 mx-auto" *ngFor="let subscription of expiredSubscribers">        
       <div class="card mb-4" [ngClass]="subscription.expired ? 'border-danger' : 'border-success'">
         <div class="card-header">
           <div class="m-0">         

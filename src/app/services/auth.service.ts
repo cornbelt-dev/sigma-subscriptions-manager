@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { EIP12ErgoAPI } from '@nautilus-js/eip12-types';
 import { Observable, of } from 'rxjs';
 import { SigmaSubscriptionsAuthResponse } from 'sigma-subscriptions';
-import { environment } from '../environments/environment';
-import { ManagerService } from './manager.service';
+import { environment } from 'src/app/environments/environment';
+import { ManagerService } from 'src/app/services/manager.service';
 
 @Injectable({
   providedIn: 'root'

@@ -27,7 +27,7 @@ export class SubscribersComponent {
     if (this.tokenId != null) {
       await this.loadSubscriptions();
     } else {
-      this.router.navigateByUrl("/manager");      
+      this.router.navigateByUrl("/services");      
     }
   }
 
@@ -44,7 +44,7 @@ export class SubscribersComponent {
         this.titleExpired = this.expiredSubscribers.length + " Expired Subscription" + (this.expiredSubscribers.length > 1 ?"s":"") + " ready to collect";
       }
     } else {
-      this.router.navigateByUrl("/manager");      
+      this.router.navigateByUrl("/services");      
     }
     this.loading = false;
   }

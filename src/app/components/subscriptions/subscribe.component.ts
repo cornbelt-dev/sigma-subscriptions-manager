@@ -35,11 +35,11 @@ export class SubscribeComponent {
     this.submitting = true;
     const wallet = await this.walletService.getWallet();
     if (wallet && this.tokenId) {
-      let startDate = new Date();
-      startDate.setHours(startDate.getHours() - 18);
-      const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId, startDate);
-      console.log(tx);
-      //const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId);
+      //let startDate = new Date();
+      //startDate.setDate(startDate.getDate() - 10);
+      //const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId, startDate);
+      // console.log(tx);
+       const tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.subscribe(wallet, this.tokenId);
       const txId = await this.walletService.signAndSend(tx);
       if (txId) {
         this.router.navigateByUrl("/transaction/" + txId, { state: { txType: "subscribe", tx: tx }});
