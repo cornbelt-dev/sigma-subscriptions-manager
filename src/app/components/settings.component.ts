@@ -14,7 +14,9 @@ export class SettingsComponent {
   constructor(public dialog: MatDialog, private managerService: ManagerService, private renderer: Renderer2) { }
 
   ngOnInit() {
-    this.renderer.addClass(document.body, localStorage.getItem("modeClass") ?? "");
+    const mode = localStorage.getItem("modeClass");
+    if (mode)
+      this.renderer.addClass(document.body, mode);
   }
 
   openSettings() {
