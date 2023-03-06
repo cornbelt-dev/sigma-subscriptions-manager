@@ -94,8 +94,8 @@ export class WalletDialogComonent {
   selector: 'address-dialog',
   template: `<div class="p-5 pb-4 text-center ">
                 <div mat-dialog-content>
-                  <h2>Connected Wallet</h2>
-                  <p class="text-break">{{data.address}}</p>
+                  <h2 class="invert">Connected Wallet</h2>
+                  <p class="text-break invert">{{data.address}}</p>
                   <h3 class="badge p-3 bg-success" [hidden]="!subscriber">You are a Sigma Subscriptions Subscriber!</h3>
                 </div>
                 <div mat-dialog-actions>

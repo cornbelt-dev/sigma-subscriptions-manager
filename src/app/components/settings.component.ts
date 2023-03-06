@@ -1,4 +1,4 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Inject, Optional, Renderer2 } from '@angular/core';
 import {  MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Network } from '@fleet-sdk/common';
 import { ManagerService } from 'src/app/services/manager.service';
@@ -11,10 +11,27 @@ import { environment } from 'src/app/environments/environment';
 
 export class SettingsComponent {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private managerService: ManagerService, private renderer: Renderer2) { }
+
+  ngOnInit() {
+    this.renderer.addClass(document.body, localStorage.getItem("modeClass") ?? "");
+  }
 
   openSettings() {
     this.dialog.open(SettingsEditComonent);
+  }
+
+  toggleMode() {
+    const newMode = document.body.classList.contains("light") ? "" : "light";
+    localStorage.setItem("modeClass", newMode);
+    newMode == "" ? 
+      this.renderer.removeClass(document.body, "light") :
+      this.renderer.addClass(document.body, newMode); 
+
+    var theme = document.getElementById('theme');
+    if (theme) {
+      newMode == "" ? theme.setAttribute('href','./assets/theme-bootstrap.css') : theme.setAttribute('href','./assets/theme-light-bootstrap.css');
+    }
   }
 
 }

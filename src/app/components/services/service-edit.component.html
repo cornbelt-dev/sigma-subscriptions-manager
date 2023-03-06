@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="text-center mb-5">
+  <div class="text-center mb-5 invert">
     <h5>
       <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
       <span class="px-1">/</span>
@@ -93,7 +93,7 @@
           </div>
       </div>
       <div class="card-footer">   
-        <button type="button" class="btn btn-secondary" (click)="nav('/services')">Cancel</button>
+        <button type="button" class="btn btn-secondary invert" (click)="nav('/services')">Cancel</button>
         <button type="submit" class="btn btn-success float-right" [disabled]="!configForm.form.valid">Submit</button>      
       </div>
     </div>  

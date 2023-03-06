@@ -16,9 +16,8 @@ export class SubscriptionsComponent {
   model: SubscriptionDetails[] = [];
   loading: boolean = false;
   submitting: boolean = false;
-  txId: string | null = null;
 
-  constructor(private walletService: WalletService, private managerService: ManagerService, private router: Router) { }
+  constructor(private walletService: WalletService, public managerService: ManagerService, private router: Router) { }
 
   async ngOnInit() {
     await this.loadSubscriptions();

@@ -53,6 +53,7 @@ export class SubscriptionService {
 export class SubscriptionDetails {
 
   boxId: string = '';
+  transactionId: string = '';
   walletAddress: string  = '';
   tokenId: string = '';
   fee: number = 0;
@@ -65,6 +66,7 @@ export class SubscriptionDetails {
   constructor(subscription?: Subscription) {
     if (subscription) {
       this.boxId = subscription.boxId;
+      this.transactionId = subscription.transactionId;
       this.walletAddress = subscription.walletAddress ?? '';
       this.tokenId = subscription.tokenId ?? '';
       this.fee = (Number(subscription.fee) / ONE_ERG_IN_NANOERG);

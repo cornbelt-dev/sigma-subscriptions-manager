@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="text-center mb-5">
+  <div class="text-center mb-5 invert">
     <h5>
       <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
       <span class="px-1">/</span>
@@ -10,36 +10,40 @@
     <h1 class="text-lg">Subscribers</h1>
   </div>
 
-  <h2 [hidden]="loading" class="text-center">{{title}}</h2>
+  <h2 [hidden]="loading" class="text-center invert">{{title}}</h2>
   <mat-spinner [hidden]="!loading" class="m-auto"></mat-spinner>
   <div class="row" [hidden]="subscribers.length > 0 || loading"><h4 class="text-center">You have no Subscribers at this time</h4></div>
   <div class="row" [hidden]="loading">
-    <div class="col-xl-6 mx-auto" *ngFor="let subscription of subscribers">        
+    <div class="col-xxl-6 mx-auto" *ngFor="let subscription of subscribers">        
       <div class="card mb-4" [ngClass]="subscription.expired ? 'border-danger' : 'border-success'">
         <div class="card-header">
           <div class="m-0 py-1">{{subscription.walletAddress}}</div>
         </div>
         <div class="card-body">
           <div class="row">
-            <div class="col-sm-4 mb-4"><p class="text-muted">Start Date</p> {{subscription.startDate | date:'medium'}}</div>
-            <div class="col-sm-4 mb-4"><p class="text-muted">End Date</p> {{subscription.endDate | date:'medium'}}</div>
-            <div class="col-sm-4 mb-4">
+            <div class="col-sm-6 col-md-4 mb-4"><p class="text-muted">Start Date</p> {{subscription.startDate | date:'medium'}}</div>
+            <div class="col-sm-6 col-md-4 mb-4"><p class="text-muted">End Date</p> {{subscription.endDate | date:'medium'}}</div>
+            <div class="col-6 col-sm-6 col-md-2 mb-4">
               <p class="text-muted">Status</p> 
               <div *ngIf="subscription.expired; then expired else active"></div>
               <ng-template #expired><span class="badge bg-danger">Expired</span></ng-template>
               <ng-template #active><span class="badge bg-success">Active</span></ng-template>
             </div>
+            <div class="col-6 col-sm-6 col-md-2 mb-4"><p class="text-muted">Fee <span class="badge badge-secondary ml-2">ERG</span></p> {{subscription.fee}}</div>
           </div>
           <div class="row">
-            <div class="col overflow-hidden"><p class="text-muted">Subscription Token Id</p>{{subscription.tokenId}}</div>
-          </div>
+            <div class="col overflow-hidden"><p class="text-muted">Subscription Token Id 
+              <a class="badge bg-dark ml-1 pt-1" href="{{this.managerService.explorerUrl}}{{subscription.transactionId}}" target="_blank">Transaction</a> </p>
+              {{subscription.tokenId}}
+            </div>
+          </div>            
         </div>
       </div>
     </div>
   </div>
 
     
-  <h2 [hidden]="loading" class="text-center">{{titleExpired}}
+  <h2 [hidden]="loading" class="text-center invert">{{titleExpired}}
     <!-- <button type="button" class="btn btn-primary float-right" (click)="collectAll()" [hidden]="expiredSubscribers.length == 0">Collect All</button> -->
   </h2>
   <div class="row" [hidden]="loading">

@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="text-center mb-5">
+  <div class="text-center mb-5 invert">
     <h5>
       <span type="button" (click)="nav('/')" class="m-0">Dashboard</span>
       <span class="px-1">/</span>
@@ -19,13 +19,13 @@
 
   <div [hidden]="loading || notFound">
     <div class="alert text-center d-table mx-auto p-5" [ngClass]="txConfirmed ? 'alert-success' : ''">
-      <h2 class="alert-heading">{{title}}</h2>      
+      <h2 class="alert-heading invert">{{title}}</h2>      
       <div [hidden]="txConfirmed"><mat-spinner class="mx-auto d-table mb-4"></mat-spinner></div>
       <span [hidden]="!txConfirmed" class="checkmark">
         <div class="checkmark_stem"></div>
         <div class="checkmark_kick"></div>
       </span>
-      <a class="d-block" href="{{link}}" target="_blank">View Transaction</a>      
+      <a class="d-block invert" href="{{link}}" target="_blank">View Transaction</a>      
       <button [hidden]="!txConfirmed" (click)="nav(action)" type="button" class="btn btn-dark mt-4">{{actionText}}</button>
     </div>
   </div>

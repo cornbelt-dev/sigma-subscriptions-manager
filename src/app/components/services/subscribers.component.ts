@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'sigma-subscriptions';
 import { UnsignedTransaction } from '@nautilus-js/eip12-types';
 import { WalletService } from 'src/app/services/wallet.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SubscriptionDetails } from 'src/app/service';
 
 @Component({
   selector: 'subscribers',
@@ -12,11 +12,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 export class SubscribersComponent {
 
-  constructor(private walletService: WalletService, private manager: ManagerService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private walletService: WalletService, public managerService: ManagerService, private router: Router, private route: ActivatedRoute) {}
 
   tokenId: string | null = null;
-  subscribers: Subscription[] = [];
-  expiredSubscribers: Subscription[] = [];
+  subscribers: SubscriptionDetails[] = [];
+  expiredSubscribers: SubscriptionDetails[] = [];
   title: string = "";
   titleExpired: string = "";
   loading: boolean = false;
@@ -34,7 +34,7 @@ export class SubscribersComponent {
   async loadSubscriptions() {
     this.loading = true;
     if (this.tokenId) {
-      const subscriptions: Subscription[] = await this.manager.sigmaSubscriptions.getSubscriptions(this.tokenId);
+      const subscriptions: SubscriptionDetails[] = (await this.managerService.sigmaSubscriptions.getSubscriptions(this.tokenId)).map(s => new SubscriptionDetails(s));
       this.subscribers = subscriptions.filter(s => !s.expired);
       if (this.subscribers.length > 0) {
         this.title = this.subscribers.length + " Active Subscriber" + (this.subscribers.length > 1 ?"s":"") + " to " + this.subscribers[0].service.config.name;
@@ -53,7 +53,7 @@ export class SubscribersComponent {
     this.submitting = true;
     const wallet = await this.walletService.getWallet();
     if (wallet) {    
-      let tx: UnsignedTransaction = await this.manager.sigmaSubscriptions.collect(wallet, boxId);
+      let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.collect(wallet, boxId);
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
       {
@@ -68,7 +68,7 @@ export class SubscribersComponent {
     const wallet = await this.walletService.getWallet();
     if (wallet) {    
       const boxIds = this.expiredSubscribers.map(s => s.boxId);
-      let tx: UnsignedTransaction = await this.manager.sigmaSubscriptions.collectBulk(wallet, boxIds);
+      let tx: UnsignedTransaction = await this.managerService.sigmaSubscriptions.collectBulk(wallet, boxIds);
       console.log(tx);
       const txId = await this.walletService.signAndSend(tx);
       if (txId)
